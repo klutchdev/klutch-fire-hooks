@@ -22,6 +22,18 @@ export const useComparatorRef = <T>(
 };
 
 export interface HasIsEqual<T> {
+  onSnapshot(
+    snapshotListenOptions: any,
+    setValue: (
+      value?:
+        | import('firebase/firestore').DocumentSnapshot<
+            import('firebase/firestore').DocumentData
+          >
+        | undefined
+    ) => void,
+    setError: (error: import('firebase/firestore').FirestoreError) => void
+  );
+  get(arg0: any);
   isEqual: (value: T) => boolean;
 }
 

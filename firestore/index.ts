@@ -4,15 +4,5 @@ export {
   useCollectionData,
   useCollectionDataOnce,
 } from './useCollection';
-export {
-  useDocument,
-  useDocumentData,
-  useDocumentOnce,
-  useDocumentDataOnce,
-} from './useDocument';
-export {
-  CollectionHook,
-  CollectionDataHook,
-  DocumentHook,
-  DocumentDataHook,
-} from './types';
+
+export { CollectionHook, CollectionDataHook } from './types';

@@ -1,15 +1,12 @@
-import firebase from 'firebase/app';
 import { useEffect } from 'react';
 import { LoadingHook, useComparatorRef, useLoadingValue } from '../util';
 
-export type DownloadURLHook = LoadingHook<string, firebase.FirebaseError>;
+export type DownloadURLHook = LoadingHook<string, Error>;
 
-export default (
-  storageRef?: firebase.storage.Reference | null
-): DownloadURLHook => {
+export default (storageRef?: any | null): DownloadURLHook => {
   const { error, loading, reset, setError, setValue, value } = useLoadingValue<
     string,
-    firebase.FirebaseError
+    Error
   >();
   const ref = useComparatorRef(storageRef, isEqual, reset);
 
@@ -25,8 +22,8 @@ export default (
 };
 
 const isEqual = (
-  v1: firebase.storage.Reference | null | undefined,
-  v2: firebase.storage.Reference | null | undefined
+  v1: any | null | undefined,
+  v2: any | null | undefined
 ): boolean => {
   const bothNull: boolean = !v1 && !v2;
   const equal: boolean = !!v1 && !!v2 && v1.fullPath === v2.fullPath;

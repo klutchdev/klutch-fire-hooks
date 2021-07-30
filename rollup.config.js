@@ -3,17 +3,15 @@ import commonjs from 'rollup-plugin-commonjs';
 import copy from 'rollup-plugin-copy';
 import resolveModule from 'rollup-plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
-import uglify from 'rollup-plugin-uglify';
+import { terser } from 'rollup-plugin-terser';
 
 import pkg from './package.json';
 import authPkg from './auth/package.json';
-import databasePkg from './database/package.json';
 import firestorePkg from './firestore/package.json';
 import storagePkg from './storage/package.json';
 
 const pkgsByName = {
   auth: authPkg,
-  database: databasePkg,
   firestore: firestorePkg,
   storage: storagePkg,
 };
@@ -28,14 +26,13 @@ const plugins = [
 
 const peerDependencies = pkg.peerDependencies || {};
 const external = [
-  ...Object.keys(pkg.peerDependencies),
+  ...Object.keys(peerDependencies),
   'firebase/auth',
-  'firebase/database',
   'firebase/firestore',
   'firebase/storage',
 ];
 
-const components = ['auth', 'database', 'firestore', 'storage'];
+const components = ['auth', 'firestore', 'storage'];
 
 export default components
   .map((component) => {
@@ -53,18 +50,19 @@ export default components
       {
         input: `${component}/index.ts`,
         output: {
-          file: `dist/react-firebase-hooks-${component}.js`,
+          file: `dist/klutch-firebase-hooks-${component}.js`,
           format: 'iife',
           sourcemap: true,
           extend: true,
-          name: 'react-firebase-hooks',
+          name: 'klutch-firebase-hooks',
           globals: {
             react: 'react',
+            auth: 'auth',
           },
         },
         plugins: [
           ...plugins,
-          uglify(),
+          terser(),
           // Copy flow files
           copy({
             [`${component}/index.js.flow`]: `${component}/dist/index.cjs.js.flow`,

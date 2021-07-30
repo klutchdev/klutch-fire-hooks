@@ -1,8 +1,0 @@
-{
-  "name": "React Firebase Hooks",
-  "platforms": ["Web"],
-  "content": "README.md",
-  "pages": [],
-  "related": ["firebase/firebase-js-sdk"],
-  "tabs": []
-}
