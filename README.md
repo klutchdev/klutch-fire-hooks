@@ -1,45 +1,92 @@
-# React Firebase Hooks
+## Klutch Fire Hooks
 
-A set of reusable [React Hooks](https://reactjs.org/docs/hooks-intro.html) for [Firebase](https://firebase.google.com/).
+### Installation
 
-[![npm version](https://img.shields.io/npm/v/klutch-firebase-hooks.svg?style=flat-square)](https://www.npmjs.com/package/klutch-firebase-hooks)
-[![npm downloads](https://img.shields.io/npm/dm/klutch-firebase-hooks.svg?style=flat-square)](https://www.npmjs.com/package/klutch-firebase-hooks)
-
-**This documentation is for v3 of React Firebase Hooks which involved a number of breaking changes, including adding support for Firebase v8.0.0 - more details [here](https://github.com/CSFrequency/klutch-firebase-hooks/releases/tag/v3.0.0). For v2 documentation, see [here](https://github.com/CSFrequency/klutch-firebase-hooks/tree/v2.2.0).**
-
-## Installation
-
-React Firebase Hooks v3 requires **React 16.8.0 or later** and **Firebase v8.0.0 or later**.
-
-> Official support for Hooks was added to React Native in v0.59.0. React Firebase Hooks works with both the Firebase JS SDK and React Native Firebase, although some of the typings may be incorrect.
+Klutch Fire Hooks is a fork of react-firebase-hooks, specifically built and refactored to accomodate the Firebase v9 Beta JavaScript SDK. Support for the 
+Realtime database and single document queries were removed, as well as the signUp/signIn auth hooks to minimize package size and allow for easier tests for now.
 
 ```bash
 # with npm
-npm install --save klutch-firebase-hooks
+npm install --save klutch-fire-hooks
 
-# with yarn
-yarn add klutch-firebase-hooks
 ```
 
-This assumes that you’re using the [npm](https://npmjs.com) or [yarn](https://yarnpkg.com/) package managers with a module bundler like [Webpack](https://webpack.js.org/) or [Browserify](http://browserify.org/) to consume [CommonJS](http://webpack.github.io/docs/commonjs.html) modules.
+### Features
 
-## Why?
+1. useAuthState() hook
+2. Firestore collection queries
+3. Snapshot listeners for Firestore collections
+4. Storage uploads, downloads and management
 
-There has been a **lot** of hype around React Hooks, but this hype merely reflects that there are obvious real world benefits of Hooks to React developers everywhere.
+```javascript
+// useAuthState() example
+import { initializeApp } from "firebase/app";
+import { getAuth } from 'firebase/auth';
+import { getStorage } from "firebase/storage";
+import { getFirestore } from "firebase/firestore";
+import { useAuthState } from 'klutch-fire-hooks';
 
-This library explores how React Hooks can work to make integration with Firebase even more straightforward than it already is. It takes inspiration for naming from RxFire and is based on an internal library that we had been using in a number of apps prior to the release of React Hooks. The implementation with hooks is 10x simpler than our previous implementation.
+// Initialize
+const firebaseApp = initializeApp(firebaseConfig);
+// Firestore
+export const firestore = getFirestore(firebaseApp);
+// Storage
+export const storage = getStorage(firebaseApp);
+// Auth
+export const auth = getAuth(firebaseApp);
 
-## Upgrading from v2 to v3
+// App component () => ...
+const [user, loading, error] = useAuthState(auth);
 
-To upgrade your project from v2 to v3 check out the [Release Notes](https://github.com/CSFrequency/klutch-firebase-hooks/releases/tag/v3.0.1) which have full details of everything that needs to be changed.
+// useAuthState with the context API 
+export const AuthContext = createContext();
 
-## Documentation
+const AuthContextProvider = ({ children }) => {
+  const [user, loading, error] = useAuthState(auth);
 
-- [Auth Hooks](/auth)
-- [Cloud Firestore Hooks](/firestore)
-- [Cloud Storage Hooks](/storage)
-- [Realtime Database Hooks](/database)
+  return (
+    <AuthContext.Provider value={{ user, loading, error }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
-## License
+// Hook for storage uploads
+const useFirebaseStorage = (file) => {
+  const [user] = useAuthState(auth);
+  const [progress, setProgress] = useState(0);
+  const [error, setError] = useState("");
+  const [url, setURL] = useState("");
 
-- See [LICENSE](/LICENSE)
+  const uploadFile = async () => {
+    const ext = file.type.split("/")[1];
+    const storageRef = ref(storage, `Avatars/${user.uid}/${Date.now()}.${ext}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snap) => {
+        let pct = Math.floor(snap.bytesTransferred / snap.totalBytes) * 100;
+        setProgress(pct);
+      },
+      function (error) {
+        setError(error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) =>
+          setURL(downloadURL)
+        );
+      }
+    );
+  };
+
+  useEffect(() => {
+    uploadFile(file);
+    return () => uploadFile();
+  }, [file]);
+
+  return { progress, error, url };
+};
+
+
+```
