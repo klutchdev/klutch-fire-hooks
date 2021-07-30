@@ -1,5 +1,5 @@
 {
-  "name": "klutch-firebase-hooks",
+  "name": "klutch-fire-hooks",
   "version": "0.0.1",
   "description": "React Hooks for Firebase",
   "files": [
@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "build": "npm run clean && rollup -c",
-    "clean": "rimraf ./dist ./auth/dist ./auth/*.d.ts ./database/dist ./database/*.d.ts ./firestore/dist ./firestore/*.d.ts ./storage/dist ./storage/*.d.ts ./util/*.d.ts",
+    "clean": "rimraf ./dist ./auth/dist ./auth/*.d.ts ./firestore/dist ./firestore/*.d.ts ./storage/dist ./storage/*.d.ts ./util/*.d.ts",
     "dev": "npm run clean && rollup -c -w",
     "prepublish": "npm run build",
     "prettier": "prettier --check .",
@@ -32,19 +32,23 @@
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "devDependencies": {
-    "@types/react": "^17.0.15",
+    "@rollup/plugin-commonjs": "^19.0.2",
+    "@rollup/plugin-node-resolve": "^13.0.4",
+    "@types/react": "^17.0.0",
     "firebase": "^9.0.0-beta.7",
     "path": "^0.12.7",
     "prettier": "2.3.2",
     "react": "^17.0.2",
     "rimraf": "^3.0.2",
     "rollup": "2.55.1",
-    "rollup-plugin-commonjs": "10.1.0",
     "rollup-plugin-copy": "^3.4.0",
-    "rollup-plugin-node-resolve": "5.2.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "0.30.0",
     "typescript": "4.3.5"
+  },
+  "peerDependencies": {
+    "firebase": ">= 8.0.0",
+    "react": ">= 16.8.0"
   },
   "typings": "index.d.ts"
 }

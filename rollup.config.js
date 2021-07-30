@@ -1,7 +1,7 @@
 import { resolve } from 'path';
-import commonjs from 'rollup-plugin-commonjs';
+import commonjs from '@rollup/plugin-commonjs';
 import copy from 'rollup-plugin-copy';
-import resolveModule from 'rollup-plugin-node-resolve';
+import resolveModule from '@rollup/plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
 
@@ -26,7 +26,7 @@ const plugins = [
 
 const peerDependencies = pkg.peerDependencies || {};
 const external = [
-  ...Object.keys(peerDependencies),
+  ...Object.keys(pkg.peerDependencies),
   'firebase/auth',
   'firebase/firestore',
   'firebase/storage',
@@ -57,7 +57,6 @@ export default components
           name: 'klutch-firebase-hooks',
           globals: {
             react: 'react',
-            auth: 'auth',
           },
         },
         plugins: [

@@ -3,7 +3,6 @@
   "compilerOptions": {
     "declaration": true,
     "importHelpers": true,
-    "allowSyntheticDefaultImports": true,
     "lib": [
       "es2017",
       "dom"
