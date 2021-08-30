@@ -1,5 +1,5 @@
 {
-  "name": "klutch-firebase-hooks/util",
+  "name": "klutch-fire-hooks/util",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js"
 }

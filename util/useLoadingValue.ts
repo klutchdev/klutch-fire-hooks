@@ -38,8 +38,6 @@ const reducer =
           loading: false,
           value: undefined,
         };
-      case 'reset':
-        return defaultState(action.defaultValue);
       case 'value':
         return {
           ...state,
@@ -47,6 +45,8 @@ const reducer =
           loading: false,
           value: action.value,
         };
+      case 'reset':
+        return defaultState(action.defaultValue);
       default:
         return state;
     }
@@ -54,10 +54,7 @@ const reducer =
 
 export default <T, E>(getDefaultValue?: () => T): LoadingValue<T, E> => {
   const defaultValue = getDefaultValue ? getDefaultValue() : undefined;
-  const [state, dispatch] = useReducer(
-    reducer<E>(),
-    defaultState(defaultValue)
-  );
+  const [state, dispatch] = useReducer(reducer<E>(), defaultState(defaultValue));
 
   const reset = () => {
     const defaultValue = getDefaultValue ? getDefaultValue() : undefined;

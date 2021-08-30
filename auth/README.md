@@ -52,7 +52,7 @@ const CurrentUser = () => {
   if (loading) {
     return (
       <div>
-        <p>Initialising User...</p>
+        <p>Initializing User...</p>
       </div>
     );
   }
@@ -78,12 +78,8 @@ const CurrentUser = () => {
 ### useCreateUserWithEmailAndPassword
 
 ```js
-const [
-  createUserWithEmailAndPassword,
-  user,
-  loading,
-  error,
-] = useCreateUserWithEmailAndPassword(auth);
+const [createUserWithEmailAndPassword, user, loading, error] =
+  useCreateUserWithEmailAndPassword(auth);
 ```
 
 Create a user with email and password. Wraps the underlying `firebase.auth().createUserWithEmailAndPassword` method and provides additional `loading` and `error` information.
@@ -110,12 +106,8 @@ import { useSignInWithEmailAndPassword } from 'klutch-firebase-hooks/auth';
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [
-    createUserWithEmailAndPassword,
-    user,
-    loading,
-    error,
-  ] = useCreateUserWithEmailAndPassword(auth);
+  const [createUserWithEmailAndPassword, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth);
 
   if (error) {
     return (
@@ -136,19 +128,9 @@ const SignIn = () => {
   }
   return (
     <div className="App">
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={() => createUserWithEmailAndPassword(email, password)}>
-        Register
-      </button>
+      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <button onClick={() => createUserWithEmailAndPassword(email, password)}>Register</button>
     </div>
   );
 };
@@ -157,12 +139,11 @@ const SignIn = () => {
 ### useSignInWithEmailAndPassword
 
 ```js
-const [
-  signInWithEmailAndPassword,
-  user,
-  loading,
-  error,
-] = useSignInWithEmailAndPassword(auth, email, password);
+const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(
+  auth,
+  email,
+  password
+);
 ```
 
 Login a user with email and password. Wraps the underlying `firebase.auth().signInWithEmailAndPassword` method and provides additional `loading` and `error` information.
@@ -186,12 +167,7 @@ import { useSignInWithEmailAndPassword } from 'klutch-firebase-hooks/auth';
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [
-    signInWithEmailAndPassword,
-    user,
-    loading,
-    error,
-  ] = useSignInWithEmailAndPassword(auth);
+  const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
 
   if (error) {
     return (
@@ -212,19 +188,9 @@ const SignIn = () => {
   }
   return (
     <div className="App">
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={() => signInWithEmailAndPassword(email, password)}>
-        Sign In
-      </button>
+      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <button onClick={() => signInWithEmailAndPassword(email, password)}>Sign In</button>
     </div>
   );
 };

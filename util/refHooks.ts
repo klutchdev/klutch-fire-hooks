@@ -26,9 +26,7 @@ export interface HasIsEqual<T> {
     snapshotListenOptions: any,
     setValue: (
       value?:
-        | import('firebase/firestore').DocumentSnapshot<
-            import('firebase/firestore').DocumentData
-          >
+        | import('firebase/firestore').DocumentSnapshot<import('firebase/firestore').DocumentData>
         | undefined
     ) => void,
     setError: (error: import('firebase/firestore').FirestoreError) => void

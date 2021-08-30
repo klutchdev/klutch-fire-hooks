@@ -50,11 +50,11 @@ export default components
       {
         input: `${component}/index.ts`,
         output: {
-          file: `dist/klutch-firebase-hooks-${component}.js`,
+          file: `dist/klutch-fire-hooks-${component}.js`,
           format: 'iife',
           sourcemap: true,
           extend: true,
-          name: 'klutch-firebase-hooks',
+          name: 'klutch-fire-hooks',
           globals: {
             react: 'react',
           },

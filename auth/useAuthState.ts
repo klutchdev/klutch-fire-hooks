@@ -1,14 +1,13 @@
-import { User, AuthError, Auth, onAuthStateChanged } from 'firebase/auth';
+import { User, Auth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useMemo } from 'react';
 import { LoadingHook, useLoadingValue } from '../util';
 
-export type AuthStateHook = LoadingHook<User | null, AuthError>;
+export type AuthStateHook = LoadingHook<User | null, Error>;
 
 export default (auth: Auth): AuthStateHook => {
-  const { error, loading, setError, setValue, value } = useLoadingValue<
-    any | null,
-    Error | any
-  >(() => auth.currentUser);
+  const { loading, error, setError, setValue, value } = useLoadingValue<User | null, Error>(
+    () => auth.currentUser
+  );
 
   useEffect(() => {
     const listener = onAuthStateChanged(auth, setValue, setError);
